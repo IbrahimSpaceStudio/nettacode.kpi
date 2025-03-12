@@ -1,27 +1,23 @@
-name: Netta Office v1.0.0 (push)
+name: NETTACODE.KPI v1.0.0 (push)
 
 on:
   push:
     branches:
-      - office
+      - main
 
 jobs:
   web-deploy:
-    name: Deploy on office
+    name: Deploy on main
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [20.12.1]
 
     steps:
       - name: 1. Get latest code
         uses: actions/checkout@v4
 
-      - name: 2. Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@master
+      - name: 2. Use Node.js v20.12.1
+        uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20.12.1
 
       - name: 3. Export environment variables
         run: echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL_OFFICE }}" >> $GITHUB_ENV
@@ -36,7 +32,7 @@ jobs:
         run: find build/ -print
 
       - name: 7. Sync files
-        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST_OFFICE }}
           username: ${{ secrets.FTP_USERNAME_OFFICE }}
